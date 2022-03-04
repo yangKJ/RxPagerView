@@ -1,0 +1,6 @@
+framework module Pods_RxPagerView_RxPagerViewUITests {
+  umbrella header "Pods-RxPagerView-RxPagerViewUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

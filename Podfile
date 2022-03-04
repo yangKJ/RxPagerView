@@ -1,40 +1,31 @@
-# RxPagerView
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
 
-FSPagerView adds rx extension
+target 'RxPagerView' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  
+  # Pods for RxPagerView
+  pod 'FSPagerView'
+  pod 'RxCocoa'
+  
+  target 'RxPagerViewTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+  
+  target 'RxPagerViewUITests' do
+    # Pods for testing
+  end
+  
+end
 
-### 使用用例
-
-```
-func setupBinding() {
-    let datasObserver = Observable.just(["luoza", "nini", "xiong", "yu"])
-    
-    datasObserver.bind(to: pagerView.rx.items()) { (row, element, cell) in
-        cell.imageView?.image = UIImage(named: element)
-    }.disposed(by: disposeBag)
-    
-    datasObserver.map { $0.count }.bind(to: pageControl.rx.numberOfPages).disposed(by: disposeBag)
-    
-    pagerView.rx.didSelectItemAtIndex.subscribe(onNext: { index in
-        debugPrint("Did select index: " + "\(index)")
-    }).disposed(by: disposeBag)
-    
-    pagerView.rx.pagerViewDidScroll.subscribe(onNext: { [weak self] index in
-        self?.pageControl.currentPage = index
-    }).disposed(by: disposeBag)
-}
-```
-
-
-### 特别提示
-- 在使用之前，需要在`Podfile`加入下面代码，用于修改`FSPagerView`内部代码
-
-```
 post_install do |installer|
   ## Fixed collectionView being internal
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerCollectionView.swift", "class FSPagerCollectionView", "public class FSPagerCollectionView")
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerCollectionView.swift", "override var scrollsToTop", "public override var scrollsToTop")
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerCollectionView.swift", "override var contentInset", "public override var contentInset")
-
+  
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerView.swift", "internal weak var collectionView:", "public weak var collectionView:")
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerView.swift", "internal var numberOfItems:", "public var numberOfItems:")
   find_and_replace("./Pods/FSPagerView/Sources/FSPagerView.swift", "internal var numberOfSections:", "public var numberOfSections:")
@@ -53,4 +44,3 @@ def find_and_replace(dir, findstr, replacestr)
   end
   Dir[dir + '*/'].each(&method(:find_and_replace))
 end
-```
